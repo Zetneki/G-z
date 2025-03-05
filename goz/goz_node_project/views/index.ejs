@@ -1,0 +1,217 @@
+<%- include('includes/header', {error: error}) %>
+<link rel="stylesheet" href="/css/store.css" />
+
+<!-- SLIDE -->
+<div class="container mt-5 mb-5">
+  <h1 class="mb-2">Újdonságok</h1>
+
+  <div
+    id="carouselExampleIndicators"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="row align-items-center">
+          <div class="col-lg-7 d-flex justify-content-end custom-height1">
+            <img
+              src="/Uploads/game_images/<%= games[games.length-1].picture %>"
+              class="img-fluid object-fit-cover"
+              alt="..."
+            />
+          </div>
+          <div class="col-lg-5 d-flex flex-column align-items-start text-start">
+            <h3><%= games[games.length-1].title %></h3>
+            <p class="mt-5 mb-5">Ár: <%= games[games.length-1].price %>$</p>
+            <a
+              href="/game/<%= games[games.length-1].gameid %>"
+              class="goz-btn goz-btn-play"
+            >
+              Megtekintés
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row align-items-center">
+          <div class="col-lg-8 d-flex justify-content-end custom-height1">
+            <img
+              src="/Uploads/game_images/<%= games[games.length-2].picture %>"
+              class="img-fluid object-fit-cover"
+              alt="..."
+            />
+          </div>
+          <div class="col-lg-4 d-flex flex-column align-items-start text-start">
+            <h3><%= games[games.length-2].title %></h3>
+            <p class="mt-5 mb-5">Ár: <%= games[games.length-2].price %>$</p>
+            <a
+              href="/game/<%= games[games.length-2].gameid %>"
+              class="goz-btn goz-btn-play"
+            >
+              Megtekintés
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row align-items-center">
+          <div class="col-lg-8 d-flex justify-content-end custom-height1">
+            <img
+              src="/Uploads/game_images/<%= games[games.length-3].picture %>"
+              class="img-fluid object-fit-cover"
+              alt="..."
+            />
+          </div>
+          <div class="col-lg-4 d-flex flex-column align-items-start text-start">
+            <h3><%= games[games.length-3].title %></h3>
+            <p class="mt-5 mb-5">Ár: <%= games[games.length-3].price %>$</p>
+            <a
+              href="/game/<%= games[games.length-3].gameid %>"
+              class="goz-btn goz-btn-play"
+            >
+              Megtekintés
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<!-- GAMES -->
+<% for (const category in gamesByCategory) { %>
+<div class="container mb-3">
+  <h1 class="mb-2"><%= category %></h1>
+
+  <% gamesByCategory[category].forEach(game => { %>
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4 custom-height2">
+        <img
+          src="/Uploads/game_images/<%= game.picture %>"
+          class="img-fluid object-fit-cover"
+          alt="..."
+        />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body row">
+          <div class="col-6">
+            <h5 class="card-title"><%= game.title %></h5>
+            <p class="card-text">Ár: <%= game.price %>$</p>
+          </div>
+
+          <div
+            class="modal fade"
+            id="deleteGame<%= game.gameid %>"
+            tabindex="-1"
+            aria-labelledby="deleteGameLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="deleteGameLabel">
+                    Játék törlése
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Biztosan véglegesen törölni szeretnéd a(z)
+                    <strong><%= game.title %></strong> című játékot?
+                  </p>
+                </div>
+                <form
+                  action="/game/delete/<%= game.gameid %>"
+                  method="post"
+                  class="modal-footer"
+                >
+                  <button
+                    type="button"
+                    class="goz-btn goz-btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="submit" class="goz-btn goz-btn-primary">
+                    Végleges törlés
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 d-flex align-items-center justify-content-end">
+            <% if (current_role === 'admin') { %>
+            <button
+              type="button"
+              class="goz-btn goz-btn-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteGame<%= game.gameid %>"
+            >
+              <i class="bx bx-x"></i>
+            </button>
+            <a
+              class="goz-btn goz-btn-primary"
+              href="/game/edit/<%= game.gameid %>"
+            >
+              <i class="bx bx-edit"></i>
+            </a>
+            <% } %>
+            <a href="/game/<%= game.gameid %>" class="goz-btn goz-btn-play">
+              Megtekintés
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>
+
+<% } %> <%- include('includes/footer') %>

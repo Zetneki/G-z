@@ -1,0 +1,114 @@
+<%- include('includes/header', {error: error}) %>
+<link rel="stylesheet" href="/css/profile.css" />
+
+<div class="container">
+  <!-- Üzenet megjelenítése -->
+  <% if (typeof message !== 'undefined') { %>
+  <p><%= message %></p>
+  <% } %>
+
+  <div class="profile-form">
+    <!-- Felhasználó adatainak megjelenítése -->
+    <h3 class="mb-3">Profil adatok</h3>
+    <p>Felhasználó neve: <%= username %></p>
+    <p>Jelenlegi email cím: <%= email %></p>
+    <!-- Email megjelenítése -->
+  </div>
+
+  <!-- Jelszó módosító form -->
+  <form
+    class="profile-form"
+    action="/profile/<%= username %>/password"
+    method="POST"
+  >
+    <h3 class="mb-3">Jelszó módosítása</h3>
+    <div class="row">
+      <div class="col">
+        <label class="form-label" for="current-password"
+          >Jelenlegi Jelszó:</label
+        >
+        <input
+          class="form-control"
+          type="password"
+          id="current-password"
+          name="current_password"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label" for="new-password">Új Jelszó:</label>
+        <input
+          class="form-control"
+          type="password"
+          id="new-password"
+          name="new_password"
+          minlength="8"
+          required
+        />
+      </div>
+    </div>
+    <div class="goz-button-row">
+      <button class="goz-btn goz-btn-primary mt-3" type="submit">
+        Jelszó módosítása
+      </button>
+    </div>
+  </form>
+
+  <!-- Email módosító form -->
+  <form
+    class="profile-form"
+    action="/profile/<%= username %>/email"
+    method="POST"
+  >
+    <h3 class="mb-3">Email cím módosítása</h3>
+    <input
+      class="form-control"
+      type="email"
+      id="new-email"
+      name="new_email"
+      value="<%= email %>"
+      required
+    />
+
+    <!-- Display profile picture if it exists -->
+    <% if (profilePicture) { %>
+    <img
+      src="../Uploads/profile_pictures/<%= profilePicture %>"
+      alt="Profile Picture"
+      width="150"
+      height="150"
+    />
+    <% } %>
+
+    <div class="goz-button-row">
+      <button class="goz-btn goz-btn-primary mt-3" type="submit">
+        Email cím módosítása
+      </button>
+    </div>
+    <!-- FONTOS! NEM ÍR KI SEMMIT, HOGY SIKERES LETT VOLNA -->
+  </form>
+
+  <!-- Form to upload a new profile picture -->
+  <form
+    class="profile-form"
+    action="/profile/<%= username %>/picture"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <h3 class="mb-3">Profilkép feltöltése</h3>
+    <input
+      class="form-control"
+      type="file"
+      name="profile_picture"
+      accept="image/*"
+      required
+    />
+    <div class="goz-button-row">
+      <button class="goz-btn goz-btn-primary mt-3" type="submit">
+        Kép feltöltése
+      </button>
+    </div>
+  </form>
+</div>
+
+<%- include('includes/footer') %>

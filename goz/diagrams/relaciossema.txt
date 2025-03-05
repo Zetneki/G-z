@@ -1,0 +1,13 @@
+Users(userID, username, password, role, email, profilePicture, status)
+
+Friends(friendshipID, userID (FK -> Users.userID), friendID (FK -> Users.userID), status)
+
+Games(gameID, title, developer, publisher, picture, releaseDate, price, description, category)
+
+GameLibrary(libraryID, userID (FK -> Users.userID), gameID (FK -> Games.gameID), status)
+
+Messages(messageID, senderID (FK -> Users.userID), receiverID (FK -> Users.userID), timestamp, content)
+
+Forum(forumID, title, description, created_at, userID (FK -> Users.userID)) ForumPosts(postID, forumID (FK -> Forum.forumID), userID (FK -> Users.userID), content, created_at)
+
+ForumComments(commentID, postID (FK -> ForumPosts.postID), userID (FK -> Users.userID), content, created_at)

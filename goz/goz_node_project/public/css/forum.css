@@ -1,0 +1,170 @@
+h2 {
+  margin: 2rem 0;
+}
+
+.goz-btn-primary {
+  margin: 1.5rem 0;
+  float: right;
+}
+
+.forum-date {
+  text-align: right;
+  font-size: 1rem;
+}
+
+.forum-list {
+  list-style-type: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-icon {
+  background-color: var(--background-color-3);
+  margin: 0;
+  padding: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-icon:hover {
+  background-color: var(--text-color-2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-item {
+  position: relative;
+  padding: 2rem;
+  background-color: var(--background-color-1);
+  margin-bottom: 2rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-item:hover {
+  background-color: var(--background-color-4);
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-title {
+  font-weight: bold;
+}
+
+.forum-controls {
+  position: absolute;
+  top: 0.35rem;
+  right: 0;
+  z-index: 2;
+}
+
+.forum-controls p,
+.forum-controls button {
+  cursor: pointer;
+}
+
+.forum-item .clickable-area {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-item .clickable-area:hover {
+  background-color: var(--background-color-4);
+  transition: all 0.2s ease-in-out;
+}
+
+.forum-description {
+  color: var(--text-color-2);
+  font-style: italic;
+}
+
+.creator {
+  text-align: right;
+  font-size: 1rem;
+}
+
+.creator-comment {
+  text-align: right;
+  font-size: 1rem;
+}
+
+.modal-body,
+.modal-header,
+.modal-footer {
+  background-color: var(--background-color-2);
+}
+
+.form-control {
+  background-color: var(--background-color-3);
+  border: 1px solid var(--goz-blue-2);
+  color: var(--text-color-1);
+  border-radius: 2px;
+}
+.form-control:focus {
+  background-color: var(--background-color-3);
+  border-color: var(--background-color-5);
+  color: var(--text-color-1);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--goz-blue-2);
+}
+
+.post-row {
+  background-color: var(--background-color-1);
+  border: 2px solid var(--background-color-3);
+  border-top: none;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.post-row h2 {
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.post {
+  background-color: var(--background-color-1);
+  border: 2px solid var(--background-color-3);
+  border-top: none;
+  padding: 2rem;
+  margin: 0;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.post-title {
+  margin: 0px 0px 10px 0px;
+}
+
+.comment-item {
+  list-style-type: none;
+  background-color: var(--background-color-1);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.comment-button {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  height: 100%;
+  font-size: 2rem;
+  text-align: left;
+}
+
+.create-forum-post {
+  margin-bottom: 2rem;
+}
+
+.comment-send-col {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.comment-send-col .goz-btn-primary {
+  margin: 0;
+  margin-top: 0.5rem;
+  height: 3rem;
+}
+
+.comment-send-top-col .form-control {
+  margin-top: 0.5rem;
+  height: 3rem;
+}

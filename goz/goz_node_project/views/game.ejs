@@ -1,0 +1,36 @@
+<%- include('includes/header', {error: error}) %>
+<link rel="stylesheet" href="/css/game.css" />
+
+<div class="container mt-5 mb-5">
+  <h3 class="mb-3"><%= game.title %></h3>
+  <div class="row game">
+    <div class="col-8 custom-height mt-3 mb-3">
+      <img
+        src="/Uploads/game_images/<%= game.picture %>"
+        class="object-fit-cover"
+        alt=""
+      />
+    </div>
+    <div class="right col-4 mt-3 d-flex flex-column">
+      <div class="upper d-flex">
+        <h3 class="mb-5 me-3">Leírás: <%= game.description %></h3>
+        <p class="mb-5 me-3">Kategória: <%= game.category %></p>
+        <p class="mb-5 me-3">Ár: <%= game.price %>$</p>
+      </div>
+      <form method="post" action="/library/add" class="lower d-flex">
+        <input type="hidden" name="gameid" value="<%= game.gameid %>" />
+        <input type="hidden" name="userid" value="<%= current_userid %>" />
+        <% if (current_role === 'player' || current_role === 'admin') { %>
+        <input
+          type="submit"
+          class="goz-btn goz-btn-play mb-3"
+          name="submit"
+          value="Vásárlás"
+        />
+        <% } %>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('includes/footer') %>

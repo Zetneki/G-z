@@ -1,0 +1,190 @@
+-- Users table with roles (player, admin)
+CREATE TABLE Users (
+    userID SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(10) CHECK (role IN ('player', 'admin')) NOT NULL,
+    email VARCHAR(100),
+    profilePicture VARCHAR(255),
+    status VARCHAR(10) DEFAULT 'active' CHECK (status IN ('active', 'inactive'))
+);
+
+-- Friends table to manage friendships between users
+CREATE TABLE Friends (
+    friendshipID SERIAL PRIMARY KEY,
+    userID INT REFERENCES Users(userID) ON DELETE CASCADE,
+    friendID INT REFERENCES Users(userID) ON DELETE CASCADE,
+    status VARCHAR(10) DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'blocked'))
+);
+
+-- Games table to store game information
+CREATE TABLE Games (
+    gameID SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    developer VARCHAR(100),
+    publisher VARCHAR(100),
+    picture VARCHAR(100),
+    releaseDate DATE,
+    price NUMERIC(10, 2),
+    description TEXT,
+    category VARCHAR(50)
+);
+
+-- GameLibrary table to link games with users
+CREATE TABLE GameLibrary (
+    libraryID SERIAL PRIMARY KEY,
+    userID INT REFERENCES Users(userID) ON DELETE CASCADE,
+    gameID INT REFERENCES Games(gameID) ON DELETE CASCADE,
+    status VARCHAR(10) DEFAULT 'owned' CHECK (status IN ('owned', 'completed'))
+);
+
+-- Messages table for messaging between users
+CREATE TABLE Messages (
+    messageID SERIAL PRIMARY KEY,
+    senderID INT REFERENCES Users(userID) ON DELETE CASCADE,
+    receiverID INT REFERENCES Users(userID) ON DELETE CASCADE,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content TEXT
+);
+
+-- Forum table for forum topics
+CREATE TABLE Forum (
+    forumID SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    userID INT REFERENCES Users(userID) ON DELETE SET NULL
+);
+
+-- ForumPosts table for posts within forum topics
+CREATE TABLE ForumPosts (
+    postID SERIAL PRIMARY KEY,
+    forumID INT REFERENCES Forum(forumID) ON DELETE CASCADE,
+    userID INT REFERENCES Users(userID) ON DELETE SET NULL,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ForumComments table for comments on forum posts
+CREATE TABLE ForumComments (
+    commentID SERIAL PRIMARY KEY,
+    postID INT REFERENCES ForumPosts(postID) ON DELETE CASCADE,
+    userID INT REFERENCES Users(userID) ON DELETE SET NULL,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO Games (title, developer, publisher, picture, releaseDate, price, description, category) VALUES
+('The Legend of Zelda: Breath of the Wild', 'Nintendo', 'Nintendo', 'zelda.jpg', '2017-03-03', 59.99, 'Step into a vast, open world in Hyrule, where you can explore a breathtaking landscape filled with secrets, solve intricate puzzles, battle formidable enemies, and uncover hidden lore. As Link, you must embark on a quest to save the kingdom from the ancient evil known as Calamity Ganon. With innovative gameplay mechanics and a true sense of freedom, this adventure redefines open-world exploration.', 'Adventure'),
+('Red Dead Redemption 2', 'Rockstar Games', 'Rockstar Games', 'rdr2.jpg', '2018-10-26', 59.99, 'Experience the brutal life of an outlaw in the dying days of the Wild West. Follow Arthur Morgan and the Van der Linde gang as they fight to survive against the forces of civilization encroaching on the frontier. With a detailed open world, unforgettable characters, and deep storytelling, this game delivers a heartfelt look into loyalty, honor, and survival.', 'Action'),
+('Cyberpunk 2077', 'CD Projekt', 'CD Projekt', 'cyberpunk2077.jpg', '2020-12-10', 29.99, 'Dive into the neon-lit streets of Night City, a sprawling, high-tech, dystopian metropolis. Play as V, a mercenary searching for a one-of-a-kind implant that grants immortality, while navigating the city''s dangerous factions and moral dilemmas. With intricate character customization and branching narrative choices, you can shape your own story in this dark, gritty sci-fi adventure.', 'RPG'),
+('The Witcher 3: Wild Hunt', 'CD Projekt Red', 'CD Projekt', 'witcher3.jpg', '2015-05-18', 39.99, 'Journey across a stunning fantasy world as Geralt of Rivia, a monster hunter searching for his adopted daughter in a world torn by war and haunted by dark magic. With rich storytelling, complex characters, and challenging quests, this open-world RPG invites you to explore mysteries, hunt down legendary beasts, and navigate morally grey choices.', 'RPG'),
+('Minecraft', 'Mojang Studios', 'Mojang Studios', 'minecraft.jpg', '2011-11-18', 26.95, 'A sandbox game where creativity has no bounds. Gather resources, craft tools, and build anything your imagination can conceive, from humble homes to sprawling cities. Whether you choose to brave the dangers of survival mode or unleash your creativity in creative mode, Minecraft offers endless possibilities.', 'Sandbox'),
+('Grand Theft Auto V', 'Rockstar North', 'Rockstar Games', 'gtav.jpg', '2013-09-17', 29.99, 'Explore the vast open world of Los Santos as three distinct characters, each with unique skills and stories. Undertake heists, engage in high-stakes missions, and experience a city filled with both humor and crime. With an online component that allows for nearly limitless gameplay options, this game has become a cultural phenomenon.', 'Action'),
+('Fortnite', 'Epic Games', 'Epic Games', 'fortnite.jpg', '2017-07-25', 0.00, 'A free-to-play battle royale game where 100 players fight to be the last one standing. Known for its colorful graphics and unique building mechanics, Fortnite challenges players to think on their feet, build defensive structures, and use a vast array of weapons to survive in an ever-shrinking map.', 'Battle Royale'),
+('God of War', 'Santa Monica Studio', 'Sony Interactive Entertainment', 'godofwar.jpg', '2018-04-20', 19.99, 'A reinvention of the classic series, set in the realm of Norse mythology. Follow Kratos and his son, Atreus, on a deeply personal journey as they face gods and monsters, confront Kratos'' violent past, and uncover ancient secrets. With visceral combat, a rich story, and breathtaking landscapes, this is an epic tale of family and redemption.', 'Action'),
+('Overwatch', 'Blizzard Entertainment', 'Blizzard Entertainment', 'overwatch.jpg', '2016-05-24', 39.99, 'A team-based multiplayer shooter where players select from a diverse roster of heroes, each with unique abilities. Work together in fast-paced, objective-driven matches and master the synergy of each hero''s skills to claim victory. Overwatch has become a staple of competitive gaming with its accessible mechanics and high skill ceiling.', 'Shooter'),
+('Call of Duty: Modern Warfare', 'Infinity Ward', 'Activision', 'codmw.jpg', '2019-10-25', 59.99, 'A reimagining of the classic modern military shooter that thrusts players into intense and gritty combat scenarios. With a compelling single-player campaign and robust multiplayer options, this game challenges you to make split-second decisions in war-torn environments.', 'Shooter'),
+('Horizon Zero Dawn', 'Guerrilla Games', 'Sony Interactive Entertainment', 'horizonzerodawn.jpg', '2017-02-28', 49.99, 'Embark on a journey in a post-apocalyptic world overrun by robotic creatures as Aloy, a skilled hunter unraveling the mysteries of her past and her world. This action RPG combines beautiful landscapes, strategic combat, and a unique setting blending primitive and high-tech elements.', 'RPG'),
+('Dark Souls III', 'FromSoftware', 'Bandai Namco Entertainment', 'darksouls3.jpg', '2016-03-24', 59.99, 'Set in a dark, medieval fantasy world, this action RPG challenges players to face monstrous foes and survive lethal environments. Known for its steep difficulty and complex lore, Dark Souls III provides a rewarding experience for players seeking a deeply atmospheric adventure.', 'Action RPG'),
+('Among Us', 'Innersloth', 'Innersloth', 'amongus.jpg', '2018-06-15', 5.00, 'A multiplayer social deduction game where players work together on a spaceship, trying to complete tasks while impostors sabotage and eliminate crew members. Deception and strategy are key as players must identify the impostors before it''s too late.', 'Party'),
+('League of Legends', 'Riot Games', 'Riot Games', 'lol.jpg', '2009-10-27', 0.00, 'A popular multiplayer online battle arena game where two teams of five compete to destroy each other’s base. With a wide array of champions to master, this game combines strategy, teamwork, and fast-paced action.', 'MOBA'),
+('World of Warcraft', 'Blizzard Entertainment', 'Blizzard Entertainment', 'wow.jpg', '2004-11-23', 14.99, 'An iconic MMORPG set in the world of Azeroth, where players choose from diverse classes and races to complete quests, fight epic bosses, and immerse themselves in a rich fantasy world. It has captivated millions with its deep lore and ever-expanding universe.', 'MMORPG'),
+('Animal Crossing: New Horizons', 'Nintendo', 'Nintendo', 'animalcrossing.jpg', '2020-03-20', 59.99, 'A life simulation game where you build your own island paradise, interact with charming animal villagers, decorate your home, and explore a peaceful world at your own pace. This title offers a relaxing and creative escape with endless customization options.', 'Simulation'),
+('Assassin''s Creed Valhalla', 'Ubisoft Montreal', 'Ubisoft', 'acvalhalla.jpg', '2020-11-10', 59.99, 'Set in the Viking era, you play as Eivor, a fierce warrior leading their clan to settle in England. With rich historical details, brutal combat, and an expansive open world, this action RPG lets you shape your own Viking legend.', 'RPG'),
+('Persona 5', 'Atlus', 'Sega', 'persona5.jpg', '2016-09-15', 59.99, 'Follow the story of a high school student with a secret double life as a Phantom Thief. In this stylish Japanese RPG, form bonds with classmates, battle supernatural enemies, and reform society in a world filled with mysteries and challenges.', 'JRPG'),
+('FIFA 21', 'EA Sports', 'Electronic Arts', 'fifa21.jpg', '2020-10-09', 59.99, 'A renowned soccer simulation that captures the thrill of the sport with realistic graphics, advanced gameplay mechanics, and modes that let you manage a team, compete online, or play solo. FIFA 21 is a must-play for sports fans.', 'Sports'),
+('DOOM Eternal', 'id Software', 'Bethesda Softworks', 'doometernal.jpg', '2020-03-20', 59.99, 'A relentless first-person shooter where you fight against demonic forces to save humanity. With intense combat, a vast arsenal of weapons, and challenging enemies, DOOM Eternal keeps players on the edge in a visceral, fast-paced battle.', 'Shooter'),
+('Battlefield V', 'DICE', 'Electronic Arts', 'battlefieldv.jpg', '2018-11-20', 49.99, 'This WWII shooter emphasizes large-scale battles with realistic environments, destructible buildings, and a diverse set of characters. Engage in intense firefights across historical locations, either in solo or cooperative modes.', 'Shooter'),
+('Apex Legends', 'Respawn Entertainment', 'Electronic Arts', 'apexlegends.jpg', '2019-02-04', 0.00, 'A free-to-play battle royale with unique heroes, each with distinct abilities. Teams of three compete to be the last squad standing in a game where tactical decision-making and skilled shooting are key to victory.', 'Battle Royale'),
+('Destiny 2', 'Bungie', 'Bungie', 'destiny2.jpg', '2017-09-06', 0.00, 'An online multiplayer shooter with RPG elements where players assume the role of Guardians defending Earth. Engage in missions, raids, and PvP, exploring different planets and uncovering a deep sci-fi lore.', 'Shooter'),
+('Ghost of Tsushima', 'Sucker Punch Productions', 'Sony Interactive Entertainment', 'ghostoftsushima.jpg', '2020-07-17', 59.99, 'Set in feudal Japan, you play as a samurai fighting against a Mongol invasion. With a stunning open world, complex sword combat, and a rich story about honor and survival, this game immerses you in a powerful historical setting.', 'Action'),
+('Final Fantasy XV', 'Square Enix', 'Square Enix', 'finalfantasyxv.jpg', '2016-11-29', 39.99, 'Join Noctis and his friends on an epic journey in a beautifully crafted fantasy world. Mixing open-world exploration with intense battles, this RPG emphasizes friendship and resilience as you fight to reclaim your throne.', 'RPG'),
+('Fall Guys', 'Mediatonic', 'Devolver Digital', 'fallguys.jpg', '2020-08-04', 19.99, 'A colorful, chaotic party game where players compete in mini-games to be the last one standing. Its simple controls and humorous designs make it fun and accessible, providing endless laughs and unpredictable gameplay.', 'Party'),
+('Tetris 99', 'Arika', 'Nintendo', 'tetris99.jpg', '2019-02-13', 0.00, 'A unique take on the classic Tetris formula, where players compete against 98 others in real-time. Strategic thinking and quick reflexes are essential to outlast and achieve victory in this intense battle royale-style puzzle game.', 'Puzzle'),
+('Control', 'Remedy Entertainment', '505 Games', 'control.jpg', '2019-08-27', 39.99, 'Step into a mysterious world as Jesse Faden, exploring a supernatural agency filled with secrets. With a compelling narrative, telekinetic powers, and strange phenomena, Control combines action and horror in an unforgettable experience.', 'Action'),
+('Bloodborne', 'FromSoftware', 'Sony Computer Entertainment', 'bloodborne.jpg', '2015-03-24', 19.99, 'Set in a gothic, nightmarish city, you face nightmarish creatures and uncover dark secrets in this challenging RPG. Known for its fast-paced combat and intense atmosphere, Bloodborne is a gripping journey through a haunting world.', 'Action RPG'),
+('Monster Hunter: World', 'Capcom', 'Capcom', 'monsterhunterworld.jpg', '2018-01-26', 29.99, 'In this action RPG, players hunt massive monsters across diverse environments. With unique weapons and gear, the game rewards strategic planning and teamwork, providing an expansive experience for both solo and multiplayer hunters.', 'RPG'),
+('NBA 2K21', 'Visual Concepts', '2K Sports', 'nba2k21.jpg', '2020-09-04', 59.99, 'A realistic basketball simulation with smooth mechanics, offering single-player career modes, team management, and multiplayer options. Its authentic gameplay and attention to detail make it a go-to for basketball fans.', 'Sports'),
+('Resident Evil 3', 'Capcom', 'Capcom', 'residentevil3.jpg', '2020-04-03', 39.99, 'A survival horror game that follows Jill Valentine as she tries to escape Raccoon City amidst a zombie outbreak. With intense gameplay and terrifying enemies, it captures the essence of the classic series with a modern touch.', 'Horror'),
+('Dead by Daylight', 'Behaviour Interactive', 'Behaviour Interactive', 'deadbydaylight.jpg', '2016-06-14', 19.99, 'An asymmetrical horror game where one player controls a killer, while four others try to escape. With unique killers and survivors, each game offers a tense, unpredictable experience filled with adrenaline and strategy.', 'Horror'),
+('Mortal Kombat 11', 'NetherRealm Studios', 'Warner Bros. Interactive', 'mortalkombat11.jpg', '2019-04-23', 49.99, 'The latest in the legendary fighting series, featuring brutal combat, iconic characters, and a cinematic story mode. Known for its intense, visceral fighting mechanics, Mortal Kombat 11 is both visually stunning and deeply satisfying.', 'Fighting'),
+('Star Wars Jedi: Fallen Order', 'Respawn Entertainment', 'Electronic Arts', 'jedifallenorder.jpg', '2019-11-15', 49.99, 'Experience the story of Cal Kestis, a young Jedi on the run from the Empire. This single-player action game combines lightsaber combat, exploration, and platforming in an epic Star Wars adventure.', 'Action'),
+('The Sims 4', 'Maxis', 'Electronic Arts', 'sims4.jpg', '2014-09-02', 39.99, 'A life simulation game where players create and control customizable Sims, build homes, and explore daily life. The Sims 4 offers an open sandbox with extensive customization, allowing players to design unique stories and environments.', 'Simulation'),
+('Half-Life: Alyx', 'Valve', 'Valve', 'halflifealyx.jpg', '2020-03-23', 59.99, 'A VR-exclusive first-person shooter set in the Half-Life universe. Players step into the shoes of Alyx Vance, battling alien creatures and uncovering secrets in an immersive and highly interactive environment.', 'Shooter'),
+('Sekiro: Shadows Die Twice', 'FromSoftware', 'Activision', 'sekiro.jpg', '2019-03-22', 59.99, 'An action-adventure game set in feudal Japan, where players control a shinobi with precise combat skills. Combining stealth, exploration, and intense battles, Sekiro offers a challenging and rewarding experience steeped in Japanese culture.', 'Action'),
+('Cuphead', 'Studio MDHR', 'Studio MDHR', 'cuphead.jpg', '2017-09-29', 19.99, 'A challenging platformer with a 1930s cartoon art style. Players take on difficult bosses and navigate surreal levels in a hand-drawn world, offering unique visuals and a classic run-and-gun experience.', 'Platformer'),
+('Dota 2', 'Valve', 'Valve', 'dota2.jpg', '2013-07-09', 0.00, 'A multiplayer online battle arena (MOBA) game where two teams compete to destroy the opposing team''s base. Featuring complex strategies, diverse heroes, and deep teamwork, it''s a staple in competitive gaming.', 'MOBA'),
+('Rainbow Six Siege', 'Ubisoft Montreal', 'Ubisoft', 'rainbowsixsiege.jpg', '2015-12-01', 19.99, 'A tactical shooter focusing on team-based combat and strategic planning. Players control unique operators in close-quarters battles, with destructible environments adding depth to every encounter.', 'Shooter'),
+('Rocket League', 'Psyonix', 'Psyonix', 'rocketleague.jpg', '2015-07-07', 19.99, 'A vehicle-based soccer game where players control cars to hit a giant ball into goals. Fast-paced and action-packed, Rocket League is popular for its accessible yet skill-based gameplay.', 'Sports'),
+('Valorant', 'Riot Games', 'Riot Games', 'valorant.jpg', '2020-06-02', 0.00, 'A tactical first-person shooter that combines precise shooting mechanics with unique agents, each with distinct abilities. Teams compete in rounds, requiring strategy, skill, and coordination.', 'Shooter'),
+('Forza Horizon 4', 'Playground Games', 'Microsoft Studios', 'forzahorizon4.jpg', '2018-10-02', 59.99, 'An open-world racing game set in the UK, featuring dynamic seasons, diverse cars, and stunning landscapes. Players race across the countryside, customize vehicles, and compete in various events.', 'Racing'),
+('Super Smash Bros. Ultimate', 'Bandai Namco Studios', 'Nintendo', 'smashbrosultimate.jpg', '2018-12-07', 59.99, 'A platform fighting game featuring characters from Nintendo franchises and other game universes. It combines accessible gameplay with deep mechanics, making it a favorite for casual and competitive players.', 'Fighting'),
+('Far Cry 5', 'Ubisoft Montreal', 'Ubisoft', 'farcry5.jpg', '2018-03-27', 29.99, 'Set in rural Montana, players fight against a doomsday cult in an open-world, first-person shooter. With a mix of action, exploration, and story, it offers a gripping adventure in a beautifully rendered environment.', 'Shooter'),
+('Kingdom Hearts III', 'Square Enix', 'Square Enix', 'kingdomhearts3.jpg', '2019-01-29', 59.99, 'An action RPG where players join Disney and Final Fantasy characters on an adventure to save worlds from darkness. The game combines magical worlds, iconic characters, and emotional storytelling.', 'RPG'),
+('No Man''s Sky', 'Hello Games', 'Hello Games', 'nomanssky.jpg', '2016-08-09', 29.99, 'A sci-fi exploration game set in a procedurally generated universe. Players can explore planets, gather resources, and engage in space combat in a boundless universe filled with mystery.', 'Adventure'),
+('Death Stranding', 'Kojima Productions', 'Sony Interactive Entertainment', 'deathstranding.jpg', '2019-11-08', 49.99, 'An action game set in a post-apocalyptic world where players journey across vast landscapes, delivering supplies and reconnecting society. Its unique storytelling and open-world mechanics provide a hauntingly original experience.', 'Action'),
+('Super Mario Odyssey', 'Nintendo', 'Nintendo', 'marioodyssey.jpg', '2017-10-27', 59.99, 'A 3D platformer featuring Mario on an adventure across diverse worlds to save Princess Peach. With inventive mechanics, including Mario''s hat, Odyssey delivers a fresh take on classic Mario gameplay.', 'Platformer'),
+('Diablo III', 'Blizzard Entertainment', 'Blizzard Entertainment', 'diablo3.jpg', '2012-05-15', 19.99, 'A dungeon-crawling RPG in a dark fantasy setting where players battle hordes of monsters and collect powerful loot. With diverse character classes and cooperative play, it offers a classic RPG experience.', 'RPG'),
+('The Outer Worlds', 'Obsidian Entertainment', 'Private Division', 'outerworlds.jpg', '2019-10-25', 29.99, 'A sci-fi RPG set in a corporate-controlled universe. Players make choices that shape the story, exploring planets, engaging in combat, and meeting eccentric characters.', 'RPG'),
+('Genshin Impact', 'miHoYo', 'miHoYo', 'genshinimpact.jpg', '2020-09-28', 0.00, 'An open-world RPG with gacha mechanics, where players explore the fantasy world of Teyvat, fight enemies, and collect characters. It combines an anime art style with action and elemental powers.', 'RPG'),
+('Splatoon 2', 'Nintendo', 'Nintendo', 'splatoon2.jpg', '2017-07-21', 59.99, 'A multiplayer shooter where players control characters that shoot ink instead of bullets, aiming to cover as much ground as possible. Its unique mechanics and bright aesthetic offer a fresh twist on the shooter genre.', 'Shooter'),
+('Hades', 'Supergiant Games', 'Supergiant Games', 'hades.jpg', '2020-09-17', 24.99, 'A roguelike action game set in Greek mythology. Players control Zagreus, the son of Hades, trying to escape the Underworld. With fast-paced combat and a strong narrative, it has won acclaim for its storytelling.', 'Roguelike'),
+('Mario Kart 8 Deluxe', 'Nintendo', 'Nintendo', 'mariokart8.jpg', '2017-04-28', 59.99, 'A kart racing game featuring Mario characters, where players race across imaginative tracks and use items to gain an edge. Known for its accessible yet competitive gameplay.', 'Racing'),
+('Planet Zoo', 'Frontier Developments', 'Frontier Developments', 'planetzoo.jpg', '2019-11-05', 44.99, 'A zoo simulation game where players create and manage their own zoo, caring for animals and crafting habitats. It offers realistic animal behavior and an educational experience for animal lovers.', 'Simulation'),
+('The Last of Us Part II', 'Naughty Dog', 'Sony Interactive Entertainment', 'lastofus2.jpg', '2020-06-19', 59.99, 'A post-apocalyptic action-adventure game following Ellie on a quest for revenge. Known for its emotional storytelling and cinematic quality, it explores complex themes in a broken world.', 'Action'),
+('Subnautica', 'Unknown Worlds Entertainment', 'Unknown Worlds Entertainment', 'subnautica.jpg', '2018-01-23', 29.99, 'An open-world survival game set in an alien ocean. Players explore underwater environments, craft items, and survive the perils of the deep in a visually captivating experience.', 'Survival'),
+('Pokémon Sword', 'Game Freak', 'Nintendo', 'pokemonsword.jpg', '2019-11-15', 59.99, 'A role-playing game where players capture and train Pokémon, engaging in battles to become the Champion. Set in the Galar region, it introduces new Pokémon and features for fans of the series.', 'RPG'),
+('Frostpunk', '11 bit studios', '11 bit studios', 'frostpunk.jpg', '2018-04-24', 29.99, 'A city-building survival game set in a frozen world. Players must manage resources, make difficult moral decisions, and ensure the survival of their society amidst extreme conditions.', 'Strategy'),
+('The Elder Scrolls V: Skyrim', 'Bethesda Game Studios', 'Bethesda Softworks', 'skyrim.jpg', '2011-11-11', 39.99, 'An open-world fantasy RPG where players explore the vast land of Skyrim, battle dragons, and develop unique skills. Known for its immersive world and endless possibilities.', 'RPG');
+
+-- 50 profil generálása "defprofpic.jpg" profilképpel
+INSERT INTO Users (username, password, role, email, profilePicture, status)
+VALUES
+    ('Áron Molnár', md5(random()::text), 'player', 'aron.molnar@example.com', 'defprofpic.jpg', 'active'),
+    ('Beatrix Tóth', md5(random()::text), 'player', 'beatrix.toth@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Csaba Varga', md5(random()::text), 'player', 'csaba.varga@example.com', 'defprofpic.jpg', 'active'),
+    ('Dénes Kertész', md5(random()::text), 'admin', 'denes.kertesz@example.com', 'defprofpic.jpg', 'active'),
+    ('Emese Kiss', md5(random()::text), 'player', 'emese.kiss@example.com', 'defprofpic.jpg', 'active'),
+    ('Ferenc Szabó', md5(random()::text), 'player', 'ferenc.szabo@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Gábor Tóth', md5(random()::text), 'player', 'gabor.toth@example.com', 'defprofpic.jpg', 'active'),
+    ('Hanna Farkas', md5(random()::text), 'player', 'hanna.farkas@example.com', 'defprofpic.jpg', 'active'),
+    ('Ildikó Horváth', md5(random()::text), 'admin', 'ildiko.horvath@example.com', 'defprofpic.jpg', 'inactive'),
+    ('József Nagy', md5(random()::text), 'player', 'jozsef.nagy@example.com', 'defprofpic.jpg', 'active'),
+    ('Katalin Molnár', md5(random()::text), 'player', 'katalin.molnar@example.com', 'defprofpic.jpg', 'inactive'),
+    ('László Kelemen', md5(random()::text), 'admin', 'laszlo.kelemen@example.com', 'defprofpic.jpg', 'active'),
+    ('Máté Szilágyi', md5(random()::text), 'player', 'mate.szilagyi@example.com', 'defprofpic.jpg', 'active'),
+    ('Noémi Jakab', md5(random()::text), 'player', 'noemi.jakab@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Olga Bálint', md5(random()::text), 'player', 'olga.balint@example.com', 'defprofpic.jpg', 'active'),
+    ('Pál Simon', md5(random()::text), 'player', 'pal.simon@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Róbert Illés', md5(random()::text), 'admin', 'robert.illes@example.com', 'defprofpic.jpg', 'active'),
+    ('Sára Juhász', md5(random()::text), 'player', 'sara.juhasz@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Tamara Kádár', md5(random()::text), 'player', 'tamara.kadar@example.com', 'defprofpic.jpg', 'active'),
+    ('Viktória Kertész', md5(random()::text), 'player', 'viktoria.kertesz@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Zoltán Takács', md5(random()::text), 'admin', 'zoltan.takacs@example.com', 'defprofpic.jpg', 'active'),
+    ('Ágnes László', md5(random()::text), 'player', 'agnes.laszlo@example.com', 'defprofpic.jpg', 'active'),
+    ('Bálint Balogh', md5(random()::text), 'player', 'balint.balogh@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Csilla Fekete', md5(random()::text), 'player', 'csilla.fekete@example.com', 'defprofpic.jpg', 'active'),
+    ('Dávid Kádár', md5(random()::text), 'player', 'david.kadar@example.com', 'defprofpic.jpg', 'active'),
+    ('Eszter Kovács', md5(random()::text), 'admin', 'eszter.kovacs@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Fruzsina Szalai', md5(random()::text), 'player', 'fruzsina.szalai@example.com', 'defprofpic.jpg', 'active'),
+    ('Gergely Vörös', md5(random()::text), 'player', 'gergely.voros@example.com', 'defprofpic.jpg', 'active'),
+    ('Hedvig Tóth', md5(random()::text), 'admin', 'hedvig.toth@example.com', 'defprofpic.jpg', 'active'),
+    ('Irén Németh', md5(random()::text), 'player', 'iren.nemeth@example.com', 'defprofpic.jpg', 'inactive'),
+    ('János Fekete', md5(random()::text), 'player', 'janos.fekete@example.com', 'defprofpic.jpg', 'active'),
+    ('Kitti Varga', md5(random()::text), 'player', 'kitti.varga@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Lili Szabó', md5(random()::text), 'player', 'lili.szabo@example.com', 'defprofpic.jpg', 'active'),
+    ('Mihály Varga', md5(random()::text), 'admin', 'mihaly.varga@example.com', 'defprofpic.jpg', 'active'),
+    ('Nándor Molnár', md5(random()::text), 'player', 'nandor.molnar@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Orsolya Kovács', md5(random()::text), 'player', 'orsolya.kovacs@example.com', 'defprofpic.jpg', 'active'),
+    ('Patrik Horváth', md5(random()::text), 'player', 'patrik.horvath@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Réka Varga', md5(random()::text), 'player', 'reka.varga@example.com', 'defprofpic.jpg', 'active'),
+    ('Sándor László', md5(random()::text), 'admin', 'sandor.laszlo@example.com', 'defprofpic.jpg', 'active'),
+    ('Tamás Nagy', md5(random()::text), 'player', 'tamas.nagy@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Vera Simon', md5(random()::text), 'player', 'vera.simon@example.com', 'defprofpic.jpg', 'active'),
+    ('Zsuzsanna Jakab', md5(random()::text), 'player', 'zsuzsanna.jakab@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Árpád Kiss', md5(random()::text), 'admin', 'arpad.kiss@example.com', 'defprofpic.jpg', 'active'),
+    ('Beáta Kovács', md5(random()::text), 'player', 'beata.kovacs@example.com', 'defprofpic.jpg', 'inactive'),
+    ('Csenge Molnár', md5(random()::text), 'player', 'csenge.molnar@example.com', 'defprofpic.jpg', 'active'),
+    ('Dávid Simon', md5(random()::text), 'player', 'david.simon@example.com', 'defprofpic.jpg', 'active'),
+    ('Enikő Horváth', md5(random()::text), 'admin', 'eniko.horvath@example.com', 'defprofpic.jpg', 'active');

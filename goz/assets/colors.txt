@@ -1,0 +1,17 @@
+:root{
+	--text-color-1: #f3f3f3;
+	--text-color-2: #76808C;
+
+	--background-color-1: #0E151C;
+	--background-color-2: #1F2329;
+	--background-color-3: #303843;
+	--background-color-4: #14344A;
+	--background-color-5: #222B44;
+
+	--goz-blue-1: #66C1F5;
+	--goz-blue-2: #4B619C;
+
+	--accent-color-1: #85AA38;
+	--accent-color-2: #A74537;
+	--accent-color-3: #A0924E;
+}

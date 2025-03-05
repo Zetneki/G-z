@@ -1,0 +1,93 @@
+<%- include('includes/header', {error: error}) %>
+<link rel="stylesheet" href="/css/messages.css" />
+
+    <div class="friends-list">
+      <h2>Your Friends</h2>
+      <ul>
+        <% friends.forEach(friend => { %>
+        <li>
+          <a
+            href="/messages/<%= friend.username %>"
+            class="friend-link <%= friend.username === selectedFriend ? 'active' : '' %>"
+          >
+            <%= friend.username %>
+            <img
+              src="/Uploads/profile_pictures/<%= friend.profilepicture %>"
+              alt="<%= friend.username %>'s Profile Picture"
+              class="friend-pic"
+            />
+          </a>
+          <hr style="border: 1px solid black; width: 80%; margin: 0 auto" />
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+    <% if (selectedFriend) { %> 
+    <div class="chat-box">
+    <% } else { %>
+    <div class="chat-box-full">
+    <% } %>
+      <% if (messages.length === 0) { %>
+      <p>Nincsenek üzenetek.</p>
+      <% } else { %> <% messages.forEach(msg => { %>
+      <div
+        class="message <%= msg.senderUsername === currentUser ? 'user-message' : '' %>"
+      >
+        <% if (msg.senderUsername === currentUser) { %>
+        <form
+          action="/messages/<%= selectedFriend %>/delete"
+          method="POST"
+          class="delete-form"
+        >
+          <input type="hidden" name="messageID" value="<%= msg.messageid %>" />
+          <button type="submit" class="delete-button">
+            <img src="/img/delete.png" id="delete-img" alt="Delete" />
+          </button>
+        </form>
+        <% } %>
+        <div class="profile-pic">
+          <img
+            src="/Uploads/profile_pictures/<%= msg.senderProfilePic %>"
+            alt="<%= msg.senderUsername %>'s Profile Picture"
+          />
+        </div>
+        <div class="message-content">
+          <span class="username" style="color: gray"
+            ><%= msg.senderUsername %></span
+          >
+          <p style="color: white"><%= msg.content %></p>
+          <p><%= msg.messageID %></p>
+        </div>
+      </div>
+      <hr style="border: 1px solid black; width: 70%; margin: 0 auto" />
+      <% }) %> <% } %>
+    </div>
+
+    <% if (selectedFriend) { %>
+      <div class="message-sender">
+        <form
+          action="/messages/<%= selectedFriend %>"
+          method="POST"
+          style="display: flex; width: 100%"
+        >
+          <input type="hidden" name="username" value="Your Name" />
+          <input
+            type="text"
+            name="message"
+            placeholder="Message"
+            class="message-input"
+            required
+          />
+          <button type="submit" class="send-button">
+            <img src="/img/send.png" alt="Send" />
+          </button>
+        </form>
+      </div>
+      <% } %>
+
+    <script src="/js/sidebar.js"></script>
+    <script src="/js/activeLinks.js"></script>
+    <script src="/js/loader.js"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.js"></script>
+  </body>
+</html>

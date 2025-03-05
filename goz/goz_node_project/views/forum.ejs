@@ -1,0 +1,228 @@
+<%- include('includes/header', {error: error}) %>
+<link rel="stylesheet" href="/css/forum.css" />
+<form
+  method="post"
+  action="/forum/add"
+  class="modal fade"
+  id="createForum"
+  tabindex="-1"
+  aria-labelledby="createForumLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createForumLabel">Fórum hozzáadása</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label class="form-label" for="title">Fórum Címe:</label>
+          <input
+            class="form-control"
+            type="text"
+            id="title"
+            name="title"
+            required
+          />
+          <label class="form-label mt-3" for="description"
+            >Forum Leírása:</label
+          >
+          <input
+            class="form-control"
+            type="text"
+            id="description"
+            name="description"
+            required
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="goz-btn goz-btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="submit" class="goz-btn goz-btn-primary">Hozzáadás</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h2>Fórumok</h2>
+    </div>
+    <div class="col-6">
+      <% if(current_role === "player" || current_role === "admin") {%>
+      <button
+        data-bs-toggle="modal"
+        data-bs-target="#createForum"
+        class="goz-btn goz-btn-primary"
+      >
+        Fórum hozzáadása
+      </button>
+      <% } %>
+    </div>
+  </div>
+  <% for (let index = 0; index < forums.length; index++) { %>
+  <ul class="forum-list">
+    <li class="forum-item">
+      <% const formattedDate = forums[index].created_at.toLocaleString("hu-HU",
+      { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit",
+      minute: "2-digit" }); %>
+      <div
+        class="clickable-area <% if(current_userid == forums[index].userid) { %>mt-3<% } %>"
+        onclick="window.location.href='/forumposts/<%= forums[index].forumid %>'"
+      >
+        <div class="row">
+          <div class="col-8">
+            <h3 class="forum-title"><%= forums[index].title %></h3>
+          </div>
+          <div class="col-4">
+            <p class="forum-date"><%= formattedDate %></p>
+          </div>
+          <div class="col-12">
+            <p class="creator">Szerző: <%= users[index].username %></p>
+          </div>
+        </div>
+        <p class="forum-description"><%= forums[index].description %></p>
+      </div>
+
+      <% if (current_userid == forums[index].userid) { %>
+      <div class="forum-controls">
+        <a
+          class="forum-icon"
+          data-bs-toggle="modal"
+          data-bs-target="#editForum<%= forums[index].forumid %>"
+          onclick="event.stopPropagation()"
+        >
+          <i class="bx bxs-edit"></i>
+        </a>
+        <a
+          class="forum-icon"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteForum<%= forums[index].forumid %>"
+          onclick="event.stopPropagation()"
+        >
+          <i class="bx bxs-trash"></i>
+        </a>
+      </div>
+      <% } %>
+    </li>
+  </ul>
+
+  <div
+    class="modal fade"
+    id="deleteForum<%= forums[index].forumid %>"
+    tabindex="-1"
+    aria-labelledby="deleteForumLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteForumLabel">Fórum törlése</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Biztosan törölni szeretné a <%= forums[index].title %> című fórumot?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="goz-btn goz-btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <form
+            action="/forum/delete/<%= forums[index].forumid %>"
+            method="post"
+            class=""
+          >
+            <button type="submit" class="m-1 goz-btn goz-btn-primary">
+              Végleges törlés
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="editForum<%= forums[index].forumid %>"
+    tabindex="-1"
+    aria-labelledby="editForumLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editForumLabel">
+            Fórum szerkesztése
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form action="/forum/edit/<%= forums[index].forumid %>" method="post">
+          <div class="modal-body">
+            <label class="form-label" for="title">Fórum Címe:</label>
+            <input
+              class="form-control"
+              type="text"
+              id="title"
+              name="title"
+              required
+              value="<%=forums[index].title %>"
+            />
+            <label class="form-label mt-3" for="description"
+              >Forum Leírása:</label
+            >
+            <input
+              class="form-control"
+              type="text"
+              id="description"
+              name="description"
+              required
+              value="<%=forums[index].description %>"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="goz-btn goz-btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="m-1 goz-btn goz-btn-primary">
+              Szerkesztés
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+<%- include('includes/footer') %>

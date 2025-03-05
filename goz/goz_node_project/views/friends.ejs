@@ -1,0 +1,144 @@
+<%- include('includes/header', {error: error}) %>
+
+<link rel="stylesheet" href="/css/friends.css" />
+
+<div class="container">
+  <!-- Jelenlegi Barátok -->
+  <section class="friend-list">
+    <h2>Jelenlegi Barátok</h2>
+    <% if (acceptedFriends && acceptedFriends.length > 0) { %>
+    <ul>
+      <% acceptedFriends.forEach(function(friend) { const profilePicture
+      ='./Uploads/profile_pictures/' + friend.profilepicture; %>
+      <li class="friend-li">
+        <div class="friend-card-upper col-12">
+          <img
+            src="<%= profilePicture %>"
+            alt="<%= friend.username %> profilképe"
+            class="friend-profpic"
+          />
+          <%= friend.username %>
+        </div>
+        <a href="/messages/<%= friend.username %>" class="message-button">
+          <i class="bx bx-message-dots"></i>Üzenet
+        </a>
+
+        <form
+          class="delete-form"
+          action="/delete_friend"
+          method="POST"
+          style="display: inline"
+        >
+          <!-- Átadjuk a barát (friend) felhasználó ID-ját és a session felhasználó ID-ját -->
+          <input type="hidden" name="friendID" value="<%= friend.userid %>" />
+          <button type="submit" class="delete-button">
+            <i class="bx bx-x"></i>Törlés
+          </button>
+        </form>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p class="helper">Nincsenek barátaid még.</p>
+    <% } %>
+  </section>
+
+  <!-- Javasolt Barátok -->
+  <section class="friend-list">
+    <h2>Barátok Keresése</h2>
+    <p class="helper">
+      Konkrét személyt keresel? Találd meg leendő barátaitad felhasználónév
+      alapján!
+    </p>
+
+    <form action="/search" method="GET">
+      <div>
+        <label class="form-label" for="username"
+          >Adj meg egy felhasználónevet:
+        </label>
+        <input class="form-control" type="text" id="username" name="username" />
+      </div>
+
+      <button class="goz-btn goz-btn-primary search-button" type="submit">
+        Keresés
+      </button>
+    </form>
+  </section>
+
+  <!-- Javasolt Barátok -->
+  <section class="friend-list">
+    <h2>Javasolt Barátok</h2>
+    <p class="helper">
+      Íme néhány felhasználó, akik megfelelhetnek a keresésnek:
+    </p>
+    <% if (usersBasedOnSearch && Object.keys(usersBasedOnSearch).length > 0) {
+    %>
+    <ul>
+      <% Object.keys(usersBasedOnSearch).forEach(function(username) { const user
+      = usersBasedOnSearch[username][0]; const profilePicture =
+      './Uploads/profile_pictures/' + user.profilepicture; %>
+
+      <li class="friend-li">
+        <div class="friend-card-upper col-12">
+          <img
+            src="<%= profilePicture %>"
+            alt="<%= username %> profilképe"
+            class="friend-profpic"
+          />
+          <%= username %>
+        </div>
+        <form action="/request_sent" method="POST" style="display: inline">
+          <input type="hidden" name="userID" value="<%= sessionUserId %>" />
+          <input type="hidden" name="friendID" value="<%= user.userid %>" />
+          <input type="hidden" name="status" value="pending" />
+          <button class="addFriend" type="submit">
+            <i class="bx bx-user-plus" style="color: #ffffff"></i>
+          </button>
+        </form>
+      </li>
+
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p>Nem található felhasználó a keresett név alapján.</p>
+    <% } %>
+  </section>
+
+  <!-- Barátfelkérések Elfogadása -->
+  <section class="friend-list">
+    <h2>Barátfelkérések Elfogadása</h2>
+    <% if (pendingRequests && pendingRequests.length > 0) { %>
+    <ul>
+      <% pendingRequests.forEach(function(request) { const profilePicture =
+      './Uploads/profile_pictures/' + request.profilepicture; %>
+
+      <li class="friend-li">
+        <div class="friend-card-upper col-12">
+          <img
+            src="<%= profilePicture %>"
+            alt="<%= request.username %> profilképe"
+            class="friend-profpic"
+          />
+          <%= request.username %>
+        </div>
+        <form action="/accept_request" method="POST" style="display: inline">
+          <input
+            type="hidden"
+            name="friendshipID"
+            value="<%= request.friendshipid %>"
+          />
+          <button class="addFriend" type="submit">
+            <i class="bx bx-user-plus" style="color: #ffffff"></i>
+          </button>
+        </form>
+      </li>
+
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p class="helper">Nincs beérkező barátfelkérés.</p>
+    <% } %>
+  </section>
+</div>
+
+<%- include('includes/footer') %>

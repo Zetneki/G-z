@@ -1,0 +1,119 @@
+<%- include("includes/header", {error: error}) %>
+<link rel="stylesheet" href="/css/admin.css" />
+<form
+  action="/game/edit/<%= game.gameid %>"
+  method="post"
+  enctype="multipart/form-data"
+  class="container mb-3"
+>
+  <h2 class="mt-4 mb-3 text-center">Játék szerkesztése</h2>
+  <label for="title" class="form-label">Játék neve</label>
+  <input
+    type="text"
+    id="title"
+    name="title"
+    required
+    maxlength="100"
+    class="form-control mb-3"
+    value="<%= game.title %>"
+  />
+  <div class="row">
+    <div class="col">
+      <label for="developer" class="form-label">Fejlesztő</label>
+      <input
+        type="text"
+        id="developer"
+        name="developer"
+        required
+        maxlength="100"
+        class="form-control mb-3"
+        value="<%= game.developer %>"
+      />
+    </div>
+    <div class="col">
+      <label for="publisher" class="form-label">Kiadó</label>
+      <input
+        type="text"
+        id="publisher"
+        name="publisher"
+        required
+        maxlength="100"
+        class="form-control"
+        value="<%= game.publisher %>"
+      />
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="description" class="form-label">Játék leírás</label>
+    <textarea
+      name="description"
+      class="form-control"
+      id="description"
+      rows="3"
+      required
+    >
+<%= game.description %></textarea
+    >
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="datePicker" class="form-label">Válassz egy dátumot:</label>
+      <input
+        type="date"
+        name="releasedate"
+        class="form-control"
+        id="datePicker"
+        required
+        value="<%= formattedReleaseDate %>"
+      />
+    </div>
+    <div class="col">
+      <label for="price" class="form-label">Ár</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input
+          class="form-control"
+          id="price"
+          type="number"
+          name="price"
+          required
+          step=".01"
+          maxlength="10"
+          value="<%= game.price %>"
+        />
+      </div>
+    </div>
+  </div>
+
+  <label for="category">Kategória</label>
+  <input
+    type="text"
+    name="category"
+    id="category"
+    required
+    maxlength="50"
+    class="form-control mb-3"
+    value="<%= game.category %>"
+  />
+  <div class="mb-3">
+    <label for="gamePicFile" class="form-label">Kép feltöltése</label>
+    <input class="form-control" type="file" id="gamePicFile" name="gameImage" />
+  </div>
+  <div class="row align-items-center">
+    <div class="col">
+      <p class="uploadLabel">
+        *Minden mező szükséges a sikeres játék szerkesztéshez.
+      </p>
+    </div>
+    <div class="col">
+      <input
+        type="submit"
+        id="updateGameSubmit"
+        value="Szerkesztés"
+        class="goz-btn goz-btn-primary"
+      />
+    </div>
+  </div>
+</form>
+<%- include("includes/footer") %>

@@ -1,0 +1,100 @@
+<%- include('includes/header', {error: error}) %>
+
+<link rel="stylesheet" href="/css/library.css" />
+<% if (empty) {%>
+<h3 class="emptylibrary">Nincsenek játékok a könyvtáradban</h3>
+<% } else { %>
+
+<div class="row g-0">
+  <div class="col-2 left">
+    <ul class="list">
+      <% for (let index = 0; index < usergames.length; index++) { %>
+      <li class="games">
+        <a href="/library/<%= usergames[index].gameid %>"
+          ><p><%= usergames[index].title %></p></a
+        >
+      </li>
+      <% } %>
+    </ul>
+  </div>
+  <div class="col-10 right">
+    <div class="upper">
+      <img
+        src="/Uploads/game_images/<%= game.picture %>"
+        class="object-fit-cover"
+        alt=""
+      />
+    </div>
+    <div class="lower d-flex">
+      <div class="title"><%= game.title %></div>
+      <div class="buttons d-flex">
+        <div class="play">
+          <button
+            class="goz-btn goz-btn-play pl"
+            onclick="window.open('/img/opened.gif', '_blank')"
+          >
+            <i class="bx bx-play"></i>
+            Játék
+          </button>
+        </div>
+        <div class="options">
+          <button
+            class="goz-btn goz-btn-tertiary opt"
+            onclick="toggleOptions()"
+          >
+            Opciók
+          </button>
+        </div>
+
+        <div id="completeGame">
+          <form method="POST" action="/library/complete">
+            <input type="hidden" name="gameid" value="<%= game.gameid %>" />
+            <button
+              id="complete"
+              type="submit"
+              class="goz-btn goz-btn-tertiary"
+            >
+              Végigjátszva
+            </button>
+          </form>
+        </div>
+
+        <div id="removeGame">
+          <form method="POST" action="/library/remove">
+            <input type="hidden" name="gameid" value="<%= game.gameid %>" />
+            <button id="remove" type="submit" class="goz-btn goz-btn-tertiary">
+              Eltávolítás
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="text row">
+        <div class="status col-12">
+          <span>Státusz:</span> <% if (status.status=== "owned") { %> <%=
+          "Folyamatban" %> <% } if (status.status=== "completed") { %> <%=
+          "Végigjátszva" %> <% } %>
+        </div>
+        <div class="other d-flex col-4">
+          <div class="publisher"><span>Kiadó:</span> <%= game.developer %></div>
+          <div class="release-date">
+            <% const formattedDate = game.releasedate.toLocaleString("hu-HU", {
+            year: "numeric", month: "2-digit", day: "2-digit" }); %>
+            <span>Megjelenési idő:</span> <%= formattedDate %>
+          </div>
+          <div class="category">
+            <span>Kategória:</span> <%= game.category %>
+          </div>
+          <div class="developer">
+            <span>Fejlesztő:</span> <%= game.publisher %>
+          </div>
+        </div>
+        <div class="description col-8">
+          <span>Leírás: </span><%= game.description %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %> <%- include('includes/footer') %>

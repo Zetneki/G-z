@@ -1,0 +1,66 @@
+* {
+    font-family: 'Motiva Sans', sans-serif;
+}
+
+:root{
+	--text-color-1: #f3f3f3;
+	--text-color-2: #76808C;
+
+	--background-color-1: #0E151C;
+	--background-color-2: #1F2329;
+	--background-color-3: #303843;
+	--background-color-4: #14344A;
+	--background-color-5: #222B44;
+
+	--goz-blue-1: #66C1F5;
+	--goz-blue-2: #4B619C;
+
+	--accent-color-1: #85AA38;
+	--accent-color-2: #A74537;
+	--accent-color-3: #A0924E;
+}
+
+footer {
+    background-color: var(--background-color-3); /* Dark background color */
+    color: var(--text-color-2); /* Light grey text color */
+    font-family: 'Motiva Sans', sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+footer a {
+    color: var(--text-color-2);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--text-color-1);
+}
+
+footer .social-icon {
+    width: 60px;
+}
+
+footer .container {
+    max-width: 1200px;
+}
+
+footer ul {
+    padding: 0;
+    list-style: none;
+}
+
+footer ul li {
+    margin-bottom: 0.5rem;
+}
+
+footer ul li a {
+    font-size: 0.875rem;
+}
+
+footer small {
+    font-size: 0.75rem;
+    color: var(--text-color-2);
+}

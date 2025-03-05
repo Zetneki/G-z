@@ -1,0 +1,239 @@
+a {
+  text-decoration: none;
+  color: var(--text-color-1);
+}
+
+/* INFO: NAVBAR */
+
+.navwrapper {
+  background-color: var(--background-color-1);
+  height: 4rem;
+}
+
+.navcontainer,
+.sidebar {
+  background-color: var(--background-color-1);
+  padding: 0.8rem;
+}
+
+.navcontainer h3,
+.sidebar h3 {
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.navcontainer .favicon,
+.sidebar .favicon {
+  width: 2rem;
+  height: 2rem;
+  fill: var(--text-color-1);
+  vertical-align: middle;
+}
+
+.navcontainer .navlink-container .navlink {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-left: 2rem;
+}
+
+.navcontainer .navlink-container .navlink:first-of-type {
+  margin-left: 0;
+}
+
+.navaction .navlink {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-left: 2rem;
+}
+
+.navlink.active {
+  color: var(--goz-blue-1);
+  border-bottom: 2px solid var(--goz-blue-1);
+}
+
+.navaction {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.navaction .bxs-group,
+.navaction .bxs-bell {
+  background-color: var(--background-color-3);
+  padding: 0.5rem 0.7rem;
+  font-size: 1.2rem;
+  color: var(--text-color-1);
+  margin-right: 0.3rem;
+}
+
+.navaction .bxs-bell {
+  background-color: var(--accent-color-1);
+  color: var(--background-color-1);
+}
+
+.navaction .navprofile {
+  height: 2.2rem;
+  padding: 0.143rem;
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color-3);
+}
+
+.navaction .profpic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.navaction .profpic-container {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.navaction .user-name {
+  padding: 0rem 1rem 0rem 0.3rem;
+}
+
+.navaction .navprofile .navwallet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navaction .dropdown-toggle::after {
+  margin: 0.6rem;
+}
+
+.navaction .dropdown-menu {
+  background-color: var(--background-color-3);
+  border: none;
+  border-radius: 0px;
+  width: 100%;
+  padding: 0;
+}
+
+.navaction .dropdown-item {
+  color: var(--text-color-1);
+  padding: 0.6rem 1rem;
+}
+
+.navaction .profile {
+  color: var(--text-color-1);
+  border-top: 1px solid var(--text-color-2);
+}
+
+.navaction .dropdown-item:hover {
+  background-color: var(--text-color-1);
+  color: var(--background-color-3);
+}
+
+.navaction .logout {
+  border-top: 1px solid var(--text-color-2);
+}
+
+/* INFO: SIDEBAR */
+
+.open-sidebar {
+  display: none;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0vh;
+  visibility: hidden;
+  background-color: var(--background-color-1);
+  transition: all 0.2s ease-in-out;
+}
+
+.open-sidebar {
+  justify-content: end;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.close-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  font-size: 1.5rem;
+}
+
+.sidebar .navlogo {
+  text-align: left;
+}
+
+.sidebar .navlink {
+  border: 0;
+  padding: 0.8rem 0;
+  justify-content: center;
+}
+
+.sidebar .navaction .navlink:first-of-type {
+  margin-left: 0rem;
+}
+
+.sidebar .navaction .navlink.active {
+  text-decoration: underline;
+  background-color: transparent;
+}
+
+.sidebar .navlink.active {
+  background-color: var(--background-color-4);
+}
+
+.sidebar .navaction {
+  padding: 0;
+  justify-content: center;
+  background-color: var(--background-color-3);
+  height: 3rem;
+}
+
+.sidebar .header-row {
+  margin-top: 0.8rem;
+}
+
+.sidebar .navaction .bxs-bell {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .navcontainer .navlink-container,
+  .navcontainer .navaction {
+    display: none;
+    align-items: space-between;
+  }
+
+  .navcontainer .navlink-container,
+  .navcontainer .navlogo {
+    text-align: left;
+  }
+
+  .open-sidebar {
+    display: flex;
+  }
+}
+
+@media (max-width: 319px) {
+  .sidebar .navaction .user-name {
+    display: none;
+  }
+
+  .sidebar .navaction .profpic {
+    margin-right: 0.2rem;
+  }
+}

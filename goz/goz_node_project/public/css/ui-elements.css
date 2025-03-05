@@ -1,0 +1,149 @@
+/*////////////// BUTTOS //////////////*/
+
+.goz-btn {
+  padding: 1rem 1.4rem;
+  border: none;
+  border-radius: 2px;
+  font-size: 0.85rem;
+}
+
+.goz-btn:hover {
+  cursor: pointer;
+}
+
+.goz-btn-primary {
+  background-color: var(--goz-blue-2);
+  color: var(--text-color-1);
+}
+
+.goz-btn-secondary {
+  background-color: var(--background-color-3);
+  color: var(--text-color-1);
+}
+
+.goz-btn-tertiary {
+  background-color: var(--background-color-1);
+  color: var(--text-color-1);
+  border: 1px solid var(--background-color-3);
+}
+
+.goz-btn-install {
+  background-color: var(--goz-blue-1);
+  color: var(--background-color-1);
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.85rem 1.25rem;
+  vertical-align: middle;
+}
+
+.goz-btn-install i {
+  font-size: 1.25rem;
+  vertical-align: middle;
+  color: var(--background-color-1);
+}
+
+.goz-btn-install p {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.goz-btn-play {
+  background-color: var(--accent-color-1);
+  color: var(--background-color-1);
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.75rem 1.2rem;
+  vertical-align: middle;
+}
+
+.goz-btn-play i {
+  font-size: 1.5rem;
+  vertical-align: middle;
+  color: var(--background-color-1);
+}
+
+.goz-btn-play p {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/*////////////// INPUTS //////////////*/
+
+.form-input {
+  background-color: var(--background-color-1);
+  color: var(--text-color-1);
+  border: 1px solid var(--background-color-3);
+  padding: 12px;
+  border-radius: 3px;
+  outline: none;
+  display: block;
+  width: 100%;
+}
+
+.form-input::placeholder {
+  color: var(--background-color-3);
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  display: block;
+  width: 100%;
+  padding: 12px 32px 12px 12px;
+  background-color: #131927;
+  border: none;
+  color: var(--text-color-1);
+  border-radius: 3px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--goz-blue-2);
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: url("search-icon.png") no-repeat center center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/*////////////// TOAST //////////////*/
+.toast {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.toast-header {
+  background-color: hsl(0, 97%, 30%, 100%);
+  border: 0;
+}
+
+.toast-body {
+  background-color: red;
+  color: white !important;
+  border: 0;
+}
+
+.toast-header * {
+  color: white !important;
+}
+
+.toast-header .toast-img {
+  width: 25px;
+  height: 25px;
+  margin-right: 0.5rem;
+}

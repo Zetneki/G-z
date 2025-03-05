@@ -1,0 +1,164 @@
+:root {
+  --text-color-1: #f3f3f3;
+  --text-color-2: #76808c;
+
+  --background-color-1: #0e151c;
+  --background-color-2: #1f2329;
+  --background-color-3: #303843;
+  --background-color-4: #14344a;
+  --background-color-5: #222b44;
+
+  --goz-blue-1: #66c1f5;
+  --goz-blue-2: #4b619c;
+
+  --accent-color-1: #b9f044;
+  --accent-color-2: #a74537;
+  --accent-color-3: #a0924e;
+}
+
+@font-face {
+  font-family: "Motiva Sans";
+  src: url("../fonts/MotivaSansMedium.woff.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Motiva Sans";
+  src: url("../fonts/MotivaSansBold.woff.ttf") format("ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  font-family: "Motiva Sans", sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  background-color: var(--background-color-1);
+}
+
+/*////////////// BUTTONS //////////////*/
+
+.btn {
+  padding: 1rem 1.4rem;
+  border: none;
+  border-radius: 2px;
+  font-size: 0.85rem;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--goz-blue-2);
+  color: var(--text-color-1);
+}
+
+.btn-secondary {
+  background-color: var(--background-color-3);
+  color: var(--text-color-1);
+}
+
+.btn-tertiary {
+  background-color: var(--background-color-1);
+  color: var(--text-color-1);
+  border: 1px solid var(--background-color-3);
+}
+
+.btn-install {
+  background-color: var(--goz-blue-1);
+  color: var(--background-color-1);
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.85rem 1.25rem;
+  vertical-align: middle;
+}
+
+.btn-install i {
+  font-size: 1.25rem;
+  vertical-align: middle;
+  color: var(--background-color-1);
+}
+
+.btn-install p {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.btn-play {
+  background-color: var(--accent-color-1);
+  color: var(--background-color-1);
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.75rem 1.2rem;
+  vertical-align: middle;
+}
+
+.btn-play i {
+  font-size: 1.5rem;
+  vertical-align: middle;
+  color: var(--background-color-1);
+}
+
+.btn-play p {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/*////////////// INPUTS //////////////*/
+
+.form-input {
+  background-color: var(--background-color-1);
+  color: var(--text-color-1);
+  border: 1px solid var(--background-color-3);
+  padding: 12px;
+  border-radius: 3px;
+  outline: none;
+  display: block;
+  width: 100%;
+}
+
+.form-input::placeholder {
+  color: var(--background-color-3);
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  display: block;
+  width: 100%;
+  padding: 12px 32px 12px 12px;
+  background-color: #131927;
+  border: none;
+  color: var(--text-color-1);
+  border-radius: 3px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--goz-blue-2);
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: url("search-icon.png") no-repeat center center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}

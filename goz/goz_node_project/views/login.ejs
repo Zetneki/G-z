@@ -1,0 +1,37 @@
+
+    <%- include('includes/header') %>
+
+    <link rel="stylesheet" href="/css/login.css" />
+
+    <div class="login-wrapper">
+      <div class="container2">
+        <h2 id="login-text">Bejelentkezés</h2>
+        <form action="/loginuser" method="post">
+          <label for="login-username">Felhasználónév:</label>
+          <input
+            type="text"
+            id="login-username"
+            name="username"
+            placeholder="Felhasználónév"
+            maxlength="32"
+            minlength="5"
+            required
+          />
+
+          <label for="login-password">Jelszó:</label>
+          <input
+            type="password"
+            id="login-password"
+            name="password"
+            placeholder="Jelszó"
+            required
+          />
+
+          <button type="submit" class="button">Bejelentkezés</button>
+        </form>
+      </div>
+    </div>
+
+    <%- include('includes/footer') %>
+  </body>
+</html>

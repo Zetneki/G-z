@@ -1,0 +1,181 @@
+<%- include('includes/header', {error: error}) %>
+<link rel="stylesheet" href="/css/forum.css" />
+
+<div class="container">
+  <div class="post">
+    <h2 class="post-title"><%= post.content %></h2>
+    <p>-<%= creator.username %></p>
+  </div>
+
+  <h3>Comments:</h3>
+  <ul class="forum-list">
+    <% if (current_role === "player" || current_role === "admin") { %>
+    <div class="create-forum-post">
+      <form
+        id="createForumPostForm"
+        method="post"
+        action="/forumpost/add/<%= post.postid %>"
+      >
+        <div class="row">
+          <div class="comment-send-top-col col-xl-11 col-lg-12">
+            <input
+              type="text"
+              class="form-control"
+              id="content"
+              name="content"
+              required
+            />
+          </div>
+          <div class="comment-send-col col-xl-1 col-lg-12">
+            <button class="goz-btn goz-btn-primary" type="submit">
+              Küldés
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <% } %> <% for (let index = 0; index < comments.length; index++) { %>
+    <li class="comment-item">
+      <div
+        class="clickable-area <% if (current_userid == comments[index].userid) { %>mt-4<% } %>"
+      >
+        <% const formattedDate =
+        comments[index].created_at.toLocaleString("hu-HU", { year: "numeric",
+        month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
+        }); %>
+        <div class="row">
+          <div class="col-8">
+            <h3 class="forum-title"><%= comments[index].content %></h3>
+          </div>
+          <div class="col-4">
+            <p class="forum-date"><%= formattedDate %></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p class="creator">Szerző: <%= users[index].username %></p>
+          </div>
+        </div>
+      </div>
+
+      <% if (current_userid == comments[index].userid) { %>
+      <div class="forum-controls">
+        <a
+          class="forum-icon"
+          data-bs-toggle="modal"
+          data-bs-target="#editForumComment<%= comments[index].commentid %>"
+          onclick="event.stopPropagation()"
+        >
+          <i class="bx bxs-edit"></i>
+        </a>
+        <a
+          class="forum-icon"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteForumComment<%= comments[index].commentid %>"
+          onclick="event.stopPropagation()"
+        >
+          <i class="bx bxs-trash"></i>
+        </a>
+      </div>
+      <% } %>
+    </li>
+
+    <!-- Törlés modal -->
+    <div
+      class="modal fade"
+      id="deleteForumComment<%= comments[index].commentid %>"
+      tabindex="-1"
+      aria-labelledby="deleteForumCommentLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Komment törlése</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Biztosan törölni szeretné ezt a kommentet?</p>
+          </div>
+          <form
+            action="/forumpost/delete/<%= comments[index].commentid %>"
+            method="post"
+            class="modal-footer"
+          >
+            <input type="hidden" name="postid" value="<%= post.postid %>" />
+            <button
+              type="button"
+              class="goz-btn goz-btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="m-1 goz-btn goz-btn-primary">
+              Végleges törlés
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Szerkesztés modal -->
+    <div
+      class="modal fade"
+      id="editForumComment<%= comments[index].commentid %>"
+      tabindex="-1"
+      aria-labelledby="editForumCommentLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Komment szerkesztése</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form
+            action="/forumpost/edit/<%= comments[index].commentid %>"
+            method="post"
+          >
+            <div class="modal-body">
+              <label class="form-label" for="content">Komment tartalma:</label>
+              <textarea
+                class="form-control"
+                id="content"
+                name="content"
+                required
+              >
+<%= comments[index].content %></textarea
+              >
+              <input type="hidden" name="postid" value="<%= post.postid %>" />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="goz-btn goz-btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="m-1 goz-btn goz-btn-primary">
+                Szerkesztés
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </ul>
+</div>
+
+<%- include('includes/footer') %>
